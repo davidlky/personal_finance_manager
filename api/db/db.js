@@ -1,11 +1,10 @@
 var Sequelize = require("sequelize");
 var config = require("../../config").db;
 
-var sequelize = new Sequelize(config.name, config.user, config.pass, {
+var sequelize = new Sequelize(config.db_name, config.db_username, config.db_password, {
   host: config.url,
   port: 5432,
   dialect: "postgres",
-  logging: (process.argv.length >= 2 && process.argv[2] == "test") ? false : console.log
 });
 
 module.exports = sequelize;
