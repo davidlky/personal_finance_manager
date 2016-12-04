@@ -20,7 +20,7 @@ Private Finance Tracker for people to set up on their servers and start tracking
 ## Task List
 MVP 1.0:
 - ~~Auth~~
-- Models
+- ~~Models~~
 - Routes
 - Import CSV -> add
 
