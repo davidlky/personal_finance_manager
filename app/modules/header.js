@@ -2,29 +2,61 @@ import React from 'react';
 import {Link} from 'react-router';
 import {Navbar, Nav, MenuItem} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import {browserHistory} from 'react-router'
+import AuthCheck from '../helper/auth'
 
 export default React.createClass({
+  getInitialState(){
+    return{
+      authenticated:true
+    }
+  },
+  componentDidUpdate(){
+    var _this = this;
+    AuthCheck(function(response){
+      console.log(response);
+      if (!response){
+        browserHistory.push("/login");
+        if (_this.state.authenticated){
+          _this.setState({
+            authenticated:false
+          })
+        }
+      }else{
+        if (!_this.state.authenticated){
+          _this.setState({
+            authenticated:true
+          })
+        }
+      }
+    })
+  },
   render() {
+    var navbar = 
+      <Nav pullRight>
+        <LinkContainer to="#" activeClassName="active">
+          <MenuItem  eventKey={1} >Link 1</MenuItem>
+        </LinkContainer>
+        <LinkContainer to="#" activeClassName="active">
+          <MenuItem  eventKey={2} >Link 2</MenuItem>
+        </LinkContainer>
+      </Nav>;
+    if (!this.state.authenticated){
+      navbar = null;
+    }
     return (
     	<div className="home-header">
          <Navbar className="navbar navbar-normal-pages navbar-show">
             <Navbar.Header>
               <Navbar.Brand>
                 <Link className="navbar-brand" to="/">
-                  <p>HEADER</p>
+                  <p>Personal Finance Manager</p>
                 </Link>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-              <Nav pullRight>
-                <LinkContainer to="#" activeClassName="active">
-                  <MenuItem  eventKey={1} >Link 1</MenuItem>
-                </LinkContainer>
-                <LinkContainer to="#" activeClassName="active">
-                  <MenuItem  eventKey={2} >Link 2</MenuItem>
-                </LinkContainer>
-              </Nav>
+              {navbar}
             </Navbar.Collapse>
           </Navbar>
     	</div>

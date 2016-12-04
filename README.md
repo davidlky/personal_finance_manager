@@ -4,15 +4,20 @@ Private Finance Tracker for people to set up on their servers and start tracking
 
 ## Task List
 MVP 1.0:
-- Auth
+- ~~Auth~~
 - Models
 - Routes
 - Import CSV -> add
 
 ### TODOs
-Lower priority tasks
+Higher Priority Tasks
+- Use MobX/Redux
+- Get rid of this bootstrappy look
+
+Lower Priority Tasks
 - More Account Types
 - More Currency Types
+- Better auth with sessions?
 
 ## Models
 Record
