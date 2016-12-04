@@ -3,15 +3,15 @@ Private Finance Tracker for people to set up on their servers and start tracking
 
 ### To Run
 1. create a `config.js` in the root folder of the project with:
-```
-module.exports = {
-	url: "http://localhost:3400/",
-	username: "username",
-	password: "password",
-	secret: "some_secret_string",
-}
-```
-Where the values of these can be whatever you want them to be
+	```
+	module.exports = {
+		url: "http://localhost:3400/",
+		username: "username",
+		password: "password",
+		secret: "some_secret_string",
+	}
+	```
+	Where the values of these can be whatever you want them to be
 2. npm install -g webpack
 3. npm install
 4. npm run start:prod
