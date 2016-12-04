@@ -21,6 +21,9 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Setup DB
+require('./db/setup');
+
 // serve our static stuff like index.css
 app.use(express.static(path.join(__dirname, '../public')));
 
