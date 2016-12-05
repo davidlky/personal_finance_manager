@@ -34,9 +34,13 @@ app.use('/auth', auth_route);
 
 app.use('/api', isAuthenticated);
 
-// Auth routes
+// Other routes
 var record_route = require('./routes/record_route');
-app.use('/api/record', isAuthenticated, record_route);
+app.use('/api/record', record_route);
+var account_route = require('./routes/account_route');
+app.use('/api/account', account_route);
+var tag_route = require('./routes/tag_route');
+app.use('/api/tag', tag_route);
 
 var api_route = require('./routes/api');
 app.use('/api', api_route);

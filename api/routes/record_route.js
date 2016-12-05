@@ -6,7 +6,9 @@ var Record = Models.Record;
 router.get('/',function(req,res){
 	Record.findAll({include: [{ all: true }]}).then(function(records){
 		res.send(records);
-	})
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
+	});
 });
 
 router.get('/:date_start/:date_end',function(req,res){
@@ -23,12 +25,24 @@ router.get('/:date_start/:date_end',function(req,res){
 			date_added: {
 				$gte: date_start,
 				$lts: date_end
-			}
+			},
+			tag: {}
 		},
 		include: [{ all: true }]
 	}).then(function(records){
 		res.send(records);
-	})
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
+	});
+});
+
+
+router.get('/:id',function(req,res){
+	Record.findById(req.params.id,{include: [{ all: true }]}).then(function(record){
+		res.send(record);
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
+	});
 });
 
 router.post('/',function(req,res){
@@ -40,7 +54,6 @@ router.post('/',function(req,res){
 	Record.build({
 		name: req.body.name,
 		amount: req.body.amount*100,
-		tagId: req.body.tagId,
 		accountId: req.body.tagId,
 		date_added:date,
 		note:req.body.note,
@@ -48,8 +61,17 @@ router.post('/',function(req,res){
 	})
 	.save()
 	.then(function(record){
-		res.send(record);
-	})
+		Models.Tag.findAll({where:{
+			id: req.body.tagId.split(",")
+		}}).then(function(tags){
+			record.addTags(tags);
+			res.send(record);
+		}).catch(function (err) {
+			res.status(402).send("cannot find tag");
+		});
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
+	});
 });
 
 router.post('/:id',function(req,res){
@@ -60,12 +82,24 @@ router.post('/:id',function(req,res){
 		}
 		req.body.date = moment(req.body.date);
 	}
-	Record.findById(req.params.id,function(record){
+	if(req.body.amount){
+		req.body.amount = req.body.amount*100;
+	}
+	Record.findById(req.params.id).then(function(record){
 		if (!record){
 			res.status(402).send("not found");
 		}
-		record.update(req.body, fields: Object.keys(record));
-		res.send(record);
+		record.update(req.body, {fields: Object.keys(record)});
+		Models.Tag.findAll({where:{
+			id: req.body.tagId.split(",")
+		}}).then(function(tags){
+			record.setTags(tags);
+			res.send(record);
+		}).catch(function (err) {
+			res.status(402).send("cannot find tag");
+		});
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
 	});
 });
 
@@ -75,6 +109,8 @@ router.delete('/:id',function(req,res){
 			res.status(402).send("Nothing Deleted");
 		}
 		res.send(num);
+	}).catch(function (err) {
+		res.status(402).send("cannot find item");
 	});
 });
 

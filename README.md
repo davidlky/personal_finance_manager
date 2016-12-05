@@ -36,7 +36,8 @@ template1=# \q
 MVP 1.0:
 - ~~Auth~~
 - ~~Models~~
-- Routes
+- ~~Routes~~
+- Front End
 - Import CSV -> add
 
 ### TODOs

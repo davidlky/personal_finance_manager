@@ -1,8 +1,8 @@
 var sequelize = require("./db");
 var Model = require('./model');
 
-// Move this elsewhere
-Model.Record.belongsTo(Model.Tag);
+Model.Record.belongsToMany(Model.Tag, {through: 'RecordProject'});
+Model.Tag.belongsToMany(Model.Record, {through: 'RecordProject'});
 Model.Record.belongsTo(Model.Account);  
 
 sequelize.sync().then(function() {
@@ -31,10 +31,11 @@ sequelize.sync().then(function() {
 											Model.Record.build({
 												name: 'Random Spending',
 												amount: 23.5*100,
-												tagId: currentTag.id,
 												accountId: account.id,
 											})
-											.save();
+											.save().then(function(record){
+												record.addTag(currentTag);
+											});
 									}
 								})
 							});
