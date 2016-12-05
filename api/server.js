@@ -8,6 +8,7 @@ var flash = require('connect-flash');
 var passport = require('./setup/passport_init');
 var expressSession = require('express-session');
 var Config = require('../config');
+var isAuthenticated = require('./helper/auth_check');
 
 var app = express();
 
@@ -30,6 +31,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Auth routes
 var auth_route = require('./routes/auth');
 app.use('/auth', auth_route);
+
+app.use('/api', isAuthenticated);
+
+// Auth routes
+var record_route = require('./routes/record_route');
+app.use('/api/record', isAuthenticated, record_route);
 
 var api_route = require('./routes/api');
 app.use('/api', api_route);

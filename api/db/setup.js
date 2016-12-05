@@ -30,7 +30,7 @@ sequelize.sync().then(function() {
 										var record = 
 											Model.Record.build({
 												name: 'Random Spending',
-												amount: 23.5,
+												amount: 23.5*100,
 												tagId: currentTag.id,
 												accountId: account.id,
 											})

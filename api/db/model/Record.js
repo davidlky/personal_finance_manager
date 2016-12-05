@@ -26,7 +26,7 @@ var Record = sequelize.define("records", {
         defaultValue: 0
     },
     amount: {
-        type: DataTypes.DECIMAL(decimals=2),
+        type: DataTypes.INTEGER,
         defaultValue: 0
     },
     date_added: {
