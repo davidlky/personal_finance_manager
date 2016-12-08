@@ -34,11 +34,14 @@ export default React.createClass({
   render() {
     var navbar = 
       <Nav pullRight>
-        <LinkContainer to="#" activeClassName="active">
-          <MenuItem  eventKey={1} >Link 1</MenuItem>
+        <LinkContainer to="/record" activeClassName="active">
+          <MenuItem  eventKey={2} >Records</MenuItem>
         </LinkContainer>
-        <LinkContainer to="#" activeClassName="active">
-          <MenuItem  eventKey={2} >Link 2</MenuItem>
+        <LinkContainer to="/tag" activeClassName="active">
+          <MenuItem  eventKey={1} >Tags</MenuItem>
+        </LinkContainer>
+        <LinkContainer to="/account" activeClassName="active">
+          <MenuItem  eventKey={2} >Accounts</MenuItem>
         </LinkContainer>
       </Nav>;
     if (!this.state.authenticated){
