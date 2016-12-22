@@ -47,9 +47,11 @@ router.post('/:id',function(req,res){
 });
 
 router.delete('/:id/:updateId',function(req,res){
-	Account.findById(req.params.updateId,function(account){
+	console.log("hit");
+	Account.findById(req.params.updateId).then(function(account){
 		if(!account){
 			res.status(403).send("not found");
+			return;
 		}
 		Record.findAll({ 
 			where:{
@@ -73,6 +75,7 @@ router.delete('/:id/:updateId',function(req,res){
 			res.status(403).send("cannot find records");
 		});
 	}).catch(function (err) {
+		console.log(err);
 		res.status(403).send("cannot find item");
 	});
 });
