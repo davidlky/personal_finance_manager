@@ -1,14 +1,13 @@
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './app/routing.js',
+  entry: './app/routing.jsx',
 
   output: {
     path: 'public',
     filename: 'bundle.js',
     publicPath: '/'
   },
-  //watch:true,
 
   plugins: process.env.NODE_ENV === 'production' ? [
     new webpack.optimize.DedupePlugin(),
@@ -19,9 +18,12 @@ module.exports = {
   module: {
     loaders: [
       { 
-        test: /\.js$/, 
-        exclude: /node_modules/, 
-        loader: 'babel-loader?presets[]=es2015&presets[]=react' 
+        test: /\.jsx?$/, 
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015', 'react']
+        }
       }
     ]
   },

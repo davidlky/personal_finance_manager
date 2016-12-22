@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from './modules/header'
-import Footer from './modules/footer'
+import Header from './modules/header.jsx'
+import Footer from './modules/footer.jsx'
 
 export default React.createClass({
 	componentDidUpdate(){

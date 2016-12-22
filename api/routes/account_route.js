@@ -8,7 +8,7 @@ router.get('/',function(req,res){
 	Account.findAll({include: [{ all: true }]}).then(function(accounts){
 		res.send(accounts);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -16,7 +16,7 @@ router.get('/:id',function(req,res){
 	Account.findById(req.params.id,{include: [{ all: true }]}).then(function(account){
 		res.send(account);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -30,26 +30,26 @@ router.post('/',function(req,res){
 	.then(function(account){
 		res.send(account);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
 router.post('/:id',function(req,res){
 	Account.findById(req.params.id).then(function(account){
 		if (!account){
-			res.status(402).send("not found");
+			res.status(403).send("not found");
 		}
-		account.update(req.body, {fields: Object.keys(account)});
+		account.update(req.body, {fields: Object.keys(account.dataValues)});
 		res.send(account);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
 router.delete('/:id/:updateId',function(req,res){
 	Account.findById(req.params.updateId,function(account){
 		if(!account){
-			res.status(402).send("not found");
+			res.status(403).send("not found");
 		}
 		Record.findAll({ 
 			where:{
@@ -63,17 +63,17 @@ router.delete('/:id/:updateId',function(req,res){
 				where:{id:req.params.id},
 			}).then(function(num){
 				if (num<1){
-					res.status(402).send("Nothing Deleted");
+					res.status(403).send("Nothing Deleted");
 				}
-				res.send(num);
+				res.send("done");
 			}).catch(function (err) {
-				res.status(402).send("cannot find account");
+				res.status(403).send("cannot find account");
 			});
 		}).catch(function (err) {
-			res.status(402).send("cannot find records");
+			res.status(403).send("cannot find records");
 		});
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 

@@ -7,7 +7,7 @@ router.get('/',function(req,res){
 	Record.findAll({include: [{ all: true }]}).then(function(records){
 		res.send(records);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -32,7 +32,7 @@ router.get('/:date_start/:date_end',function(req,res){
 	}).then(function(records){
 		res.send(records);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -41,7 +41,7 @@ router.get('/:id',function(req,res){
 	Record.findById(req.params.id,{include: [{ all: true }]}).then(function(record){
 		res.send(record);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -67,10 +67,10 @@ router.post('/',function(req,res){
 			record.addTags(tags);
 			res.send(record);
 		}).catch(function (err) {
-			res.status(402).send("cannot find tag");
+			res.status(403).send("cannot find tag");
 		});
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -87,30 +87,30 @@ router.post('/:id',function(req,res){
 	}
 	Record.findById(req.params.id).then(function(record){
 		if (!record){
-			res.status(402).send("not found");
+			res.status(403).send("not found");
 		}
-		record.update(req.body, {fields: Object.keys(record)});
+		record.update(req.body, {fields: Object.keys(record.dataValues)});
 		Models.Tag.findAll({where:{
 			id: req.body.tagId.split(",")
 		}}).then(function(tags){
 			record.setTags(tags);
 			res.send(record);
 		}).catch(function (err) {
-			res.status(402).send("cannot find tag");
+			res.status(403).send("cannot find tag");
 		});
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
 router.delete('/:id',function(req,res){
 	Record.destroy({where:{id:req.params.id}}).then(function(num){
 		if (num<1){
-			res.status(402).send("Nothing Deleted");
+			res.status(403).send("Nothing Deleted");
 		}
-		res.send(num);
+		res.send("done");
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 

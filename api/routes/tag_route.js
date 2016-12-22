@@ -8,7 +8,7 @@ router.get('/',function(req,res){
 	Tag.findAll({include: [{ all: true }]}).then(function(tags){
 		res.send(tags);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -44,7 +44,39 @@ router.get('/:id',function(req,res){
 	Tag.findById(req.params.id,{include: [{ all: true }]}).then(function(tag){
 		res.send(tag);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
+	});
+});
+
+router.post('/:id',function(req,res){
+	Tag.findById(req.params.id).then(function(tag){
+		if (!tag){
+			res.status(403).send("not found");
+			return;
+		}
+		if (!req.body.parentTag){
+			req.body.parentTag=null;
+		}
+		tag.update(req.body, {fields: Object.keys(tag.dataValues)});
+		res.send(tag);
+	}).catch(function (err) {
+		res.status(403).send("cannot find item");
+	});
+});
+
+router.delete('/:id',function(req,res){
+	Tag.destroy({
+		where:{id:req.params.id},
+		truncate:false,
+		cascard:false
+	}).then(function(num){
+		if (num<1){
+			res.status(403).send("Nothing Deleted");
+			return;
+		}
+		res.send("done");
+	}).catch(function (err) {
+		res.status(403).send("cannot find item");
 	});
 });
 
@@ -57,34 +89,7 @@ router.post('/',function(req,res){
 	.then(function(tag){
 		res.send(tag);
 	}).catch(function (err) {
-		res.status(402).send("cannot find item");
-	});
-});
-
-router.post('/:id',function(req,res){
-	Tag.findById(req.params.id).then(function(tag){
-		if (!tag){
-			res.status(402).send("not found");
-		}
-		tag.update(req.body, {fields: Object.keys(tag)});
-		res.send(tag);
-	}).catch(function (err) {
-		res.status(402).send("cannot find item");
-	});
-});
-
-router.delete('/:id',function(req,res){
-	Tag.destroy({
-		where:{id:req.params.id},
-		truncate:true,
-		cascard:true
-	}).then(function(num){
-		if (num<1){
-			res.status(402).send("Nothing Deleted");
-		}
-		res.send(num);
-	}).catch(function (err) {
-		res.status(402).send("cannot find item");
+		res.status(403).send("cannot find item");
 	});
 });
 
