@@ -37,8 +37,9 @@ MVP 1.0:
 - ~~Auth~~
 - ~~Models~~
 - ~~Routes~~
-- Front End
+- ~~Front End~~
 - Import CSV -> add
+- Filtering
 
 ### TODOs
 Higher Priority Tasks
