@@ -18,6 +18,11 @@ import AccountIndex from './pages/account/index.jsx';
 import AccountCreate from './pages/account/create.jsx';
 import AccountEdit from './pages/account/edit.jsx';
 
+//Record
+import RecordIndex from './pages/record/index.jsx';
+import RecordCreate from './pages/record/create.jsx';
+import RecordEdit from './pages/record/edit.jsx';
+
 render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
@@ -28,9 +33,14 @@ render((
       	<Route path="edit/:id" component={TagEdit}/>
       </Route>
       <Route path="/account">
-      	<IndexRoute component={AccountIndex}/>
-      	<Route path="create" component={AccountCreate}/>
-      	<Route path="edit/:id" component={AccountEdit}/>
+        <IndexRoute component={AccountIndex}/>
+        <Route path="create" component={AccountCreate}/>
+        <Route path="edit/:id" component={AccountEdit}/>
+      </Route>
+      <Route path="/record">
+        <IndexRoute component={RecordIndex}/>
+        <Route path="create" component={RecordCreate}/>
+        <Route path="edit/:id" component={RecordEdit}/>
       </Route>
       <IndexRoute component={Home}/>
     </Route>

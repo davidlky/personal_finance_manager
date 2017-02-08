@@ -14,7 +14,7 @@ var Record = sequelize.define("records", {
             notEmpty: true
         }
     },
-    notes: {
+    note: {
         type: DataTypes.STRING,
         validate: {
             len: [0, 255],

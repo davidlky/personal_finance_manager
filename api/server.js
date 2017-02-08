@@ -7,6 +7,9 @@ var session = require('express-session')
 var flash = require('connect-flash');
 var passport = require('./setup/passport_init');
 var expressSession = require('express-session');
+var webpack = require('webpack');
+var webpackConfig = require('../webpack.config.js');
+var compiler = webpack(webpackConfig);
 var Config = require('../config');
 var isAuthenticated = require('./helper/auth_check');
 
@@ -14,8 +17,15 @@ var app = express();
 
 app.use(compression());
 app.use(expressSession({secret: Config.secret}));
-app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath,
+}));
+app.use(require('webpack-hot-middleware')(compiler));
 app.use(cookieParser(Config.secret))
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());

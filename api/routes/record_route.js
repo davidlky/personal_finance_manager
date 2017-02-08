@@ -17,16 +17,15 @@ router.get('/:date_start/:date_end',function(req,res){
 		res.status(401).send("Invalid Date");
 		return;
 	}
-	var date_start = moment(req.params.date_start, "YYYY-MM-DD");
-	var date_end = moment(req.params.date_end, "YYYY-MM-DD");
+	var date_start = moment(req.params.date_start, "YYYY-MM-DD").add(-1, 'days');
+	var date_end = moment(req.params.date_end, "YYYY-MM-DD").add(1, 'days');
 
 	Record.findAll({ 
 		where: {
 			date_added: {
 				$gte: date_start,
-				$lts: date_end
+				$lte: date_end
 			},
-			tag: {}
 		},
 		include: [{ all: true }]
 	}).then(function(records){
@@ -46,6 +45,7 @@ router.get('/:id',function(req,res){
 });
 
 router.post('/',function(req,res){
+	console.log(req.body);
 	if (!moment(req.body.date).isValid()){
 		res.status(401).send("Invalid Date");
 		return;
@@ -54,7 +54,7 @@ router.post('/',function(req,res){
 	Record.build({
 		name: req.body.name,
 		amount: req.body.amount*100,
-		accountId: req.body.tagId,
+		accountId: req.body.account,
 		date_added:date,
 		note:req.body.note,
 		split_with:req.body.split_with
@@ -62,7 +62,7 @@ router.post('/',function(req,res){
 	.save()
 	.then(function(record){
 		Models.Tag.findAll({where:{
-			id: req.body.tagId.split(",")
+			id: req.body.tagId
 		}}).then(function(tags){
 			record.addTags(tags);
 			res.send(record);
@@ -91,7 +91,7 @@ router.post('/:id',function(req,res){
 		}
 		record.update(req.body, {fields: Object.keys(record.dataValues)});
 		Models.Tag.findAll({where:{
-			id: req.body.tagId.split(",")
+			id: req.body.tagId
 		}}).then(function(tags){
 			record.setTags(tags);
 			res.send(record);

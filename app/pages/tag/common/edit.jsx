@@ -54,7 +54,6 @@ export default React.createClass({
 	},
 
 	newValue:function(tag){
-		console.log(tag);
 		this.setState({
 			parent:tag?tag.id:null
 		});

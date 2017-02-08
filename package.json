@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node api/server.js"
+    "start": "node api/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,8 @@
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
     "react-router-bootstrap": "^0.23.1",
+    "webpack-dev-middleware": "^1.7.0",
+    "webpack-hot-middleware": "^2.12.2",
     "react-select": "^1.0.0-rc.2",
     "sequelize": "^3.27.0"
   },
